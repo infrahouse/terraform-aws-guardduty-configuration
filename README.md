@@ -7,7 +7,7 @@ The module configures GuardDuty in one region and email notifications.
 ```hcl
 module "guard_duty" {
   source  = "infrahouse/guardduty-configuration/aws"
-  version = "0.2.0"
+  version = "0.2.1"
 
   notifications_email = "dev@infrahouse.com"
 }
