@@ -1,5 +1,6 @@
 resource "aws_guardduty_detector" "main" {
   enable = true
+  tags   = local.default_module_tags
 }
 
 resource "aws_guardduty_detector_feature" "enabled" {

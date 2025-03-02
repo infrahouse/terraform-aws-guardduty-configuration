@@ -1,6 +1,6 @@
 data "aws_iam_policy_document" "guardduty_assume" {
   statement {
-    effect = "Allow"
+    effect  = "Allow"
     actions = ["sts:AssumeRole"]
     principals {
       identifiers = [
@@ -24,10 +24,12 @@ data "aws_iam_policy_document" "guardduty_permissions" {
 resource "aws_iam_role" "guardduty" {
   name_prefix        = "guardduty-publish-"
   assume_role_policy = data.aws_iam_policy_document.guardduty_assume.json
+  tags               = local.default_module_tags
 }
 
 resource "aws_iam_policy" "guardduty" {
   policy = data.aws_iam_policy_document.guardduty_permissions.json
+  tags   = local.default_module_tags
 }
 
 resource "aws_iam_role_policy_attachment" "guardduty" {

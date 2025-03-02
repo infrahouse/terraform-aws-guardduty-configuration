@@ -1,4 +1,4 @@
 module "guard_duty" {
-  source = "./../../"
+  source              = "./../../"
   notifications_email = "dev@infrahouse.com"
 }
