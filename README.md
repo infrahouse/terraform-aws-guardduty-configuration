@@ -11,7 +11,8 @@ module "guard_duty" {
 
   notifications_email = "dev@infrahouse.com"
 }
-```## Requirements
+```
+## Requirements
 
 | Name | Version |
 |------|---------|
