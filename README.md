@@ -19,7 +19,7 @@ The module configures AWS GuardDuty threat detection service in a single region 
 ```hcl
 module "guard_duty" {
   source  = "infrahouse/guardduty-configuration/aws"
-  version = "0.2.1"
+  version = "0.3.0"
 
   notifications_email = "dev@infrahouse.com"
 }
