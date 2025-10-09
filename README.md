@@ -1,6 +1,18 @@
 # terraform-aws-guardduty-configuration
 
-The module configures GuardDuty in one region and email notifications.
+The module configures AWS GuardDuty threat detection service in a single region with comprehensive monitoring capabilities and email notifications.
+
+## Features
+
+- **GuardDuty Detector**: Enables AWS GuardDuty with continuous threat detection
+- **Enhanced Protection**: Configures multiple detector features including:
+  - S3 data events monitoring
+  - EBS malware protection
+  - RDS login events tracking
+  - Lambda network logs analysis
+  - Runtime monitoring with EC2 agent management
+- **Automated Notifications**: Sets up CloudWatch Events and SNS to send email alerts for GuardDuty findings
+- **Customizable Tags**: Apply custom tags to all created resources
 
 ## Usage
 
@@ -17,13 +29,13 @@ module "guard_duty" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.5 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.56 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.56, < 7.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.56 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.56, < 7.0 |
 
 ## Modules
 
