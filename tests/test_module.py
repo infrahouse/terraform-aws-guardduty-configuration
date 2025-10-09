@@ -1,14 +1,32 @@
+from os import path as osp, remove
+from shutil import rmtree
 from textwrap import dedent
 
+import pytest
 from pytest_infrahouse import terraform_apply
 
 from tests.conftest import TERRAFORM_ROOT_DIR
 
-from os import path as osp
 
-
-def test_module(keep_after, test_role_arn, aws_region):
+@pytest.mark.parametrize(
+    "aws_provider_version", ["~> 5.62", "~> 6.0"], ids=["aws-5", "aws-6"]
+)
+def test_module(keep_after, test_role_arn, aws_region, aws_provider_version):
     terraform_module_dir = osp.join(TERRAFORM_ROOT_DIR, "guardduty-configuration")
+    state_files = [
+        osp.join(terraform_module_dir, ".terraform"),
+        osp.join(terraform_module_dir, ".terraform.lock.hcl"),
+    ]
+
+    for state_file in state_files:
+        try:
+            if osp.isdir(state_file):
+                rmtree(state_file)
+            elif osp.isfile(state_file):
+                remove(state_file)
+        except FileNotFoundError:
+            pass
+
     with open(osp.join(terraform_module_dir, "terraform.tfvars"), "w") as fp:
         fp.write(
             dedent(
@@ -25,6 +43,23 @@ def test_module(keep_after, test_role_arn, aws_region):
                     """
                 )
             )
+
+    with open(osp.join(terraform_module_dir, "terraform.tf"), "w") as fp:
+        fp.write(
+            dedent(
+                f"""
+                terraform {{
+                  //noinspection HILUnresolvedReference
+                  required_providers {{
+                    aws = {{
+                      source  = "hashicorp/aws"
+                      version = "{aws_provider_version}"
+                    }}
+                  }}
+                }}
+                """
+            )
+        )
 
     with terraform_apply(
         terraform_module_dir,

@@ -1,5 +1,8 @@
 .DEFAULT_GOAL := help
 
+TEST_REGION="us-west-2"
+TEST_ROLE="arn:aws:iam::303467602807:role/guardduty-configuration-tester"
+
 define PRINT_HELP_PYSCRIPT
 import re, sys
 
@@ -28,11 +31,26 @@ test:  ## Run tests on the module
 	#rm -rf test_data/test_module/.terraform
 	pytest -xvvs tests/
 
+.PHONY: test-keep
+test-keep:  ## Run a test and keep resources
+	pytest -xvvs \
+		--aws-region=${TEST_REGION} \
+		--test-role-arn=${TEST_ROLE} \
+		--keep-after \
+		tests/test_module.py
+
+.PHONY: test-clean
+test-clean:  ## Run a test and destroy resources
+	pytest -xvvs \
+		--aws-region=${TEST_REGION} \
+		--test-role-arn=${TEST_ROLE} \
+		tests/test_module.py
+
 
 .PHONY: bootstrap
 bootstrap: install-hooks ## bootstrap the development environment
-	pip install -U "pip ~= 23.1"
-	pip install -U "setuptools ~= 68.0"
+	pip install -U "pip ~= 25.2"
+	pip install -U "setuptools ~= 80.9"
 	pip install -r requirements.txt
 
 .PHONY: clean
